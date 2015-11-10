@@ -12,16 +12,18 @@
 static NSString *const cellId = @"WNOptionCell";
 
 @interface WNDropDownView ()<UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate>{
-//    当前所选的项
+    //    当前所选的项
     UILabel *_selectedOption;
-//    打开选项和关闭选项的指示器
+    //    打开选项和关闭选项的指示器
     UIImageView *_frontArrow;
-//    所有选项
+    //    所有选项
     UITableView *_optionTableView;
-
-//    控件宽
+    
+    //    分割线
+    UIView *_separatorView;
+    //    控件宽
     CGFloat _width;
-//    控件高
+    //    控件高
     CGFloat _heigth;
 }
 @end
@@ -87,10 +89,14 @@ static NSString *const cellId = @"WNOptionCell";
 }
 
 -(void)initView{
+    self.layer.borderWidth=1;
+    _separatorView=[[UIView alloc] init];
+    _separatorView.backgroundColor=[UIColor grayColor];
+    [self addSubview:_separatorView];
     _selectedOption = [[UILabel alloc] init];
     _selectedOption.textAlignment = NSTextAlignmentCenter;
     [self addSubview:_selectedOption];
-//    添加点击手势给整个视图加
+    //    添加点击手势给整个视图加
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showAndHiddenMenu)];
     tap.delegate = self;
     [self addGestureRecognizer:tap];
@@ -98,7 +104,7 @@ static NSString *const cellId = @"WNOptionCell";
     _frontArrow = [[UIImageView alloc] init];
     _frontArrow.image = [UIImage imageNamed:@"down_dark0"];//向下
     [self addSubview:_frontArrow];
-//    所有选项
+    //    所有选项
     _optionTableView = [[UITableView alloc] init];
     //使分割线重头开始画
     if ([_optionTableView respondsToSelector:@selector(setSeparatorInset:)]) {
@@ -115,6 +121,8 @@ static NSString *const cellId = @"WNOptionCell";
 }
 
 -(void)layoutView{
+    _separatorView.frame=CGRectMake(0, _heigth-0.5, _width, 0.5);
+    
     _frontArrow.frame = CGRectMake(_width-_heigth, 0, _heigth, _heigth);
     
     _selectedOption.frame = CGRectMake(0, 0, _width-_heigth, _heigth);
@@ -125,8 +133,11 @@ static NSString *const cellId = @"WNOptionCell";
 -(void)layoutSubviews{
     
 }
-
 #pragma mark setter
+-(void)setImage:(NSArray *)image{
+    _image=image;
+    [_optionTableView reloadData];
+}
 -(void)setTitles:(NSArray *)titles{
     _titles = titles;
     [_optionTableView reloadData];
@@ -138,7 +149,7 @@ static NSString *const cellId = @"WNOptionCell";
     _selectedTitle = _titles[selectedIndex];
     //显示当前选中的内容
     _selectedOption.text = _selectedTitle;
-
+    
 }
 -(void)setOpen:(BOOL)isOpen{
     //设置是否为打开
@@ -150,12 +161,15 @@ static NSString *const cellId = @"WNOptionCell";
                 [self.delegate dropDownWillDeopen:self];
             }
         }
-        NSLog(@"close");
+        //        NSLog(@"close");
+        [UIView animateWithDuration:0.3 animations:^{
+            _frontArrow.transform = CGAffineTransformIdentity;
+            
+        }];
         [UIView animateWithDuration:0.3 animations:^{
             _optionTableView.frame = CGRectMake(0, _heigth, _width, 0);
             self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, _width, _heigth);
         } completion:^(BOOL finished) {
-            _frontArrow.transform = CGAffineTransformIdentity;
             if ([self.delegate conformsToProtocol:@protocol(WNDropDownDelegate)]) {
                 if ([self.delegate respondsToSelector:@selector(dropDownDidDeopen:)]) {
                     [self.delegate dropDownDidDeopen:self];
@@ -163,13 +177,15 @@ static NSString *const cellId = @"WNOptionCell";
             }
         }];
     } else {
-        NSLog(@"open");
+        //        NSLog(@"open");
         if ([self.delegate conformsToProtocol:@protocol(WNDropDownDelegate)]) {
             if ([self.delegate respondsToSelector:@selector(dropDownWillOpen:)]) {
                 [self.delegate dropDownWillOpen:self];
             }
         }
-        _frontArrow.transform = CGAffineTransformMakeRotation(3.1415926);
+        [UIView animateWithDuration:0.3 animations:^{
+            _frontArrow.transform = CGAffineTransformMakeRotation(3.1415926);
+        }];
         [UIView animateWithDuration:0.3 animations:^{
             _optionTableView.frame = CGRectMake(0, _heigth, _width, _heigth*_titles.count);
             self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, _width, _heigth*(1+_titles.count));
@@ -188,12 +204,26 @@ static NSString *const cellId = @"WNOptionCell";
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     WNDropDownItem *cell = [tableView dequeueReusableCellWithIdentifier:cellId forIndexPath:indexPath];
-    cell.dic = @{
+    if (_image.count>indexPath.row) {
+        cell.dic = @{
+                     @"title":_titles[indexPath.row],
+                     @"heigth":[NSNumber numberWithDouble:_heigth],//设置单元格内容宽和高
+                     @"width":[NSNumber numberWithDouble:_width],
+                     @"icon":_image[indexPath.row]
+                     };
+    }else{
+        cell.dic = @{
                      @"title":_titles[indexPath.row],
                      @"heigth":[NSNumber numberWithDouble:_heigth],//设置单元格内容宽和高
                      @"width":[NSNumber numberWithDouble:_width]
                      };
-   
+    }
+    if ([self.delegate conformsToProtocol:@protocol(WNDropDownDelegate)]) {
+        if ([self.delegate respondsToSelector:@selector(dropDownView:items:atIndex:)]) {
+            [self.delegate dropDownView:self items:cell atIndex:indexPath.row];
+        }
+    }
+    
     
     return cell;
 }
@@ -204,8 +234,8 @@ static NSString *const cellId = @"WNOptionCell";
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [self showAndHiddenMenu];
-    [_delegate dropDown:self selectedAtIndex:indexPath.row];
     self.selectedIndex = indexPath.row;
+    [_delegate dropDown:self selectedAtIndex:indexPath.row];
 }
 //使单元格分割线重头开始画, 对当前要显示的单元格进行配置
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -216,7 +246,7 @@ static NSString *const cellId = @"WNOptionCell";
         [cell setLayoutMargins:UIEdgeInsetsZero];
     }
 }
-#pragma mark 现实和隐藏下拉菜单
+#pragma mark 实现和隐藏下拉菜单
 -(void)showAndHiddenMenu{
     self.open = !_open;
 }
@@ -229,11 +259,11 @@ static NSString *const cellId = @"WNOptionCell";
     return YES;
 }
 /*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
-}
-*/
+ // Only override drawRect: if you perform custom drawing.
+ // An empty implementation adversely affects performance during animation.
+ - (void)drawRect:(CGRect)rect {
+ // Drawing code
+ }
+ */
 
 @end
