@@ -71,5 +71,5 @@
 -(instancetype)initWithSize:(CGSize)size andTitles:(NSArray *)titles;
 //使用对象数组进行初始化
 -(instancetype)initWithFrame:(CGRect)frame andObjects:(NSArray *)objs withTitlesForKeyPath:(NSString *)keyPath;
-
+-(instancetype)initWithSize:(CGSize)size andObjects:(NSArray *)objs withTitlesForKeyPath:(NSString *)keyPath;
 @end

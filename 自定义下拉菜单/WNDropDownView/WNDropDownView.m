@@ -104,13 +104,30 @@ static NSString *const cellId = @"WNOptionCell";
     }
     return self;
 }
+-(instancetype)initWithSize:(CGSize)size andObjects:(NSArray *)objs withTitlesForKeyPath:(NSString *)keyPath{
+    self = [super init];
+    if (self) {
+        _width = size.width;
+        _heigth = size.height;
+        _open = NO;
+        
+        _titles = [self getNewArrayForProperty:objs withKeyPaty:keyPath];
+        //初始化
+        [self initView];
+        //布局
+        [self layoutView];
+    }
+    return self;
+}
+
+
 //根据对象数组获取对象某个属性组成新的数组
 -(NSArray *)getNewArrayForProperty:(NSArray *)objs withKeyPaty:(NSString *)keyPath{
     NSMutableArray *marr = [NSMutableArray array];
     for (id obj in objs) {
-        [marr addObject:[obj objectForKey:keyPath]];
+        [marr addObject:[obj valueForKey:keyPath]];
     }
-    return marr;
+    return [marr copy];
 }
 
 

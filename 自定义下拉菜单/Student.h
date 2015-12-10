@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface Studeng : NSObject
+@interface Student : NSObject
 @property(nonatomic, copy)NSString *name;
 @property(nonatomic, copy)NSString *no;
 @property(nonatomic, assign)NSInteger age;

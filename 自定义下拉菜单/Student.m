@@ -6,8 +6,8 @@
 //  Copyright © 2015年 scsys. All rights reserved.
 //
 
-#import "Studeng.h"
+#import "Student.h"
 
-@implementation Studeng
+@implementation Student
 
 @end

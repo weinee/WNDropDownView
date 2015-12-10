@@ -8,10 +8,12 @@
 
 #import "ViewController.h"
 #import "WNDropDownView.h"
+#import "Student.h"
 
 @interface ViewController ()<WNDropDownDelegate>
 @property (strong,nonatomic) WNDropDownView *dropDownView;
 @property (strong,nonatomic) WNDropDownView *dropDownView2;
+@property (strong,nonatomic) WNDropDownView *dropDownView3;
 @end
 
 @implementation ViewController
@@ -37,6 +39,25 @@
     self.dropDownView2.image=@[@"optionUp",@"optionDown",@"optionLeft",@"optionRight"];
     self.dropDownView2.delegate = self;
     [self.view addSubview:self.dropDownView2];
+    
+    
+    Student *stu1 = [[Student alloc] init];
+    stu1.name = @"qw";
+    
+    Student *stu2 = [[Student alloc] init];
+    stu2.name = @"rt";
+
+    Student *stu3 = [[Student alloc] init];
+    stu3.name = @"df";
+    NSArray *arr = @[stu1, stu2, stu3];
+    //全部添加图片的下拉菜单
+    //初始化,使用对象
+    _dropDownView3 = [[WNDropDownView alloc] initWithFrame:CGRectMake(100, 255, 100, 20) andObjects:arr withTitlesForKeyPath:@"name"];
+    self.dropDownView3.tag=2;
+    self.dropDownView3.selectedIndex = 0;
+    self.dropDownView3.image=@[@"optionUp",@"optionDown",@"optionLeft",@"optionRight"];
+    self.dropDownView3.delegate = self;
+    [self.view addSubview:self.dropDownView3];
 }
 
 -(void)dropDown:(WNDropDownView *)dropDown selectedAtIndex:(NSInteger)index{
