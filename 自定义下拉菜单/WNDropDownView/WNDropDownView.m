@@ -26,6 +26,7 @@ static NSString *const cellId = @"WNOptionCell";
     //    控件高
     CGFloat _heigth;
 }
+
 @end
 @implementation WNDropDownView
 - (instancetype)initWithFrame:(CGRect)frame
@@ -88,6 +89,31 @@ static NSString *const cellId = @"WNOptionCell";
     return self;
 }
 
+-(instancetype)initWithFrame:(CGRect)frame andObjects:(NSArray *)objs withTitlesForKeyPath:(NSString *)keyPath{
+    self = [super initWithFrame:frame];
+    if (self) {
+        _width = frame.size.width;
+        _heigth = frame.size.height;
+        _open = NO;
+        
+        _titles = [self getNewArrayForProperty:objs withKeyPaty:keyPath];
+        //初始化
+        [self initView];
+        //布局
+        [self layoutView];
+    }
+    return self;
+}
+//根据对象数组获取对象某个属性组成新的数组
+-(NSArray *)getNewArrayForProperty:(NSArray *)objs withKeyPaty:(NSString *)keyPath{
+    NSMutableArray *marr = [NSMutableArray array];
+    for (id obj in objs) {
+        [marr addObject:[obj objectForKey:keyPath]];
+    }
+    return marr;
+}
+
+
 -(void)initView{
     self.layer.borderWidth=1;
     _separatorView=[[UIView alloc] init];
@@ -106,6 +132,7 @@ static NSString *const cellId = @"WNOptionCell";
     [self addSubview:_frontArrow];
     //    所有选项
     _optionTableView = [[UITableView alloc] init];
+    
     //使分割线重头开始画
     if ([_optionTableView respondsToSelector:@selector(setSeparatorInset:)]) {
         [_optionTableView setSeparatorInset:UIEdgeInsetsZero];
@@ -149,11 +176,15 @@ static NSString *const cellId = @"WNOptionCell";
     _selectedTitle = _titles[selectedIndex];
     //显示当前选中的内容
     _selectedOption.text = _selectedTitle;
-    
 }
+-(void)setOriginalTitle:(NSString *)originalTitle{
+    //显示当前选中的内容
+    _selectedOption.text = originalTitle;
+}
+
 -(void)setOpen:(BOOL)isOpen{
     //设置是否为打开
-    [self bringSubviewToFront:self.superview];
+//    [self bringSubviewToFront:self.superview];
     _open = isOpen;
     if (!_open) {
         if ([self.delegate conformsToProtocol:@protocol(WNDropDownDelegate)]) {
@@ -204,6 +235,7 @@ static NSString *const cellId = @"WNOptionCell";
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     WNDropDownItem *cell = [tableView dequeueReusableCellWithIdentifier:cellId forIndexPath:indexPath];
+    
     if (_image.count>indexPath.row) {
         cell.dic = @{
                      @"title":_titles[indexPath.row],
@@ -218,13 +250,9 @@ static NSString *const cellId = @"WNOptionCell";
                      @"width":[NSNumber numberWithDouble:_width]
                      };
     }
-    if ([self.delegate conformsToProtocol:@protocol(WNDropDownDelegate)]) {
-        if ([self.delegate respondsToSelector:@selector(dropDownView:items:atIndex:)]) {
-            [self.delegate dropDownView:self items:cell atIndex:indexPath.row];
-        }
+    if ([self.delegate respondsToSelector:@selector(dropDownView:items:atIndex:)]) {
+        [self.delegate dropDownView:self items:cell atIndex:indexPath.row];
     }
-    
-    
     return cell;
 }
 

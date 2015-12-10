@@ -27,6 +27,8 @@
     //    self.dropDownView.image=@[@"down_dark0",@"down_dark0",@"down_dark0"];
     self.dropDownView.delegate = self;
     [self.view addSubview:self.dropDownView];
+    
+    
     //全部添加图片的下拉菜单
     //初始化
     self.dropDownView2=[[WNDropDownView alloc] initWithFrame:CGRectMake(180, 115, 100, 20) andTitles:@[@"向上",@"向下",@"向左",@"向右"]];
@@ -53,12 +55,13 @@
 -(void)dropDownDidDeopen:(WNDropDownView *)dropDown{
     NSLog(@"did close");
 }
+
 -(void)dropDownView:(WNDropDownView *)dropDown items:(WNDropDownItem *)item atIndex:(NSUInteger)index{
     if (dropDown.tag==1) {
         if (index==2) {
-            NSMutableDictionary *dics=[NSMutableDictionary dictionaryWithDictionary:item.dic];
+            NSMutableDictionary *dics = [NSMutableDictionary dictionaryWithDictionary:item.dic];
             [dics setObject:@"down_dark0" forKey:@"icon"];
-            item.dic=dics;
+            item.dic = [dics copy];
         }
     }
     

@@ -53,21 +53,23 @@
 @property(nonatomic, strong)NSArray *titles;
 //图像数组,会按照顺序加进列表
 @property(strong,nonatomic)NSArray *image;
-
-@property(nonatomic, strong)NSString *currentTitle;
-//当前显示的内容(和标题数组下标是相对应的)
-@property(nonatomic, strong, readonly)NSString *selectedTitle;
 //当前选中的下标
 @property(nonatomic, assign)NSInteger selectedIndex;
+//当前显示的内容(和标题数组下标是相对应的)
+@property(nonatomic, strong, readonly)NSString *selectedTitle;
+//初始标题, 仅仅用来设置初始标题，不能获取标题。
+@property(nonatomic, strong)NSString *originalTitle;
 //代理
 @property(nonatomic, strong)id<WNDropDownDelegate>delegate;
 //菜单是否展开
 @property(nonatomic, assign, getter=isOpen)BOOL open;
 
 //使用尺寸进行初始化，适用于自动布局
-- (instancetype)initWithSize:(CGSize)size;
+-(instancetype)initWithSize:(CGSize)size;
 //使用标题数组进行初始化
-- (instancetype)initWithFrame:(CGRect)frame andTitles:(NSArray *)titles;
-- (instancetype)initWithSize:(CGSize)size andTitles:(NSArray *)titles;
+-(instancetype)initWithFrame:(CGRect)frame andTitles:(NSArray *)titles;
+-(instancetype)initWithSize:(CGSize)size andTitles:(NSArray *)titles;
+//使用对象数组进行初始化
+-(instancetype)initWithFrame:(CGRect)frame andObjects:(NSArray *)objs withTitlesForKeyPath:(NSString *)keyPath;
 
 @end

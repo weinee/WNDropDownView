@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		78C0A7771C19600000596A7D /* Studeng.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C0A7761C19600000596A7D /* Studeng.m */; };
 		A7445A551BE847EF00090AF1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A7445A541BE847EF00090AF1 /* main.m */; };
 		A7445A581BE847EF00090AF1 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A7445A571BE847EF00090AF1 /* AppDelegate.m */; };
 		A7445A5B1BE847EF00090AF1 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7445A5A1BE847EF00090AF1 /* ViewController.m */; };
@@ -34,6 +35,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		78C0A7751C19600000596A7D /* Studeng.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Studeng.h; sourceTree = "<group>"; };
+		78C0A7761C19600000596A7D /* Studeng.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Studeng.m; sourceTree = "<group>"; };
 		A7445A4F1BE847EF00090AF1 /* 自定义下拉菜单.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "自定义下拉菜单.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7445A531BE847EF00090AF1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A7445A541BE847EF00090AF1 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -103,6 +106,8 @@
 				A7445A571BE847EF00090AF1 /* AppDelegate.m */,
 				A7445A591BE847EF00090AF1 /* ViewController.h */,
 				A7445A5A1BE847EF00090AF1 /* ViewController.m */,
+				78C0A7751C19600000596A7D /* Studeng.h */,
+				78C0A7761C19600000596A7D /* Studeng.m */,
 				A7445A5C1BE847EF00090AF1 /* Main.storyboard */,
 				A7445A5F1BE847EF00090AF1 /* Images.xcassets */,
 				A7445A611BE847EF00090AF1 /* LaunchScreen.xib */,
@@ -267,6 +272,7 @@
 			files = (
 				CBDE91B41BF17140008A713A /* WNDropDownItem.m in Sources */,
 				A7445A5B1BE847EF00090AF1 /* ViewController.m in Sources */,
+				78C0A7771C19600000596A7D /* Studeng.m in Sources */,
 				A7445A581BE847EF00090AF1 /* AppDelegate.m in Sources */,
 				CBDE91B51BF17140008A713A /* WNDropDownView.m in Sources */,
 				A7445A551BE847EF00090AF1 /* main.m in Sources */,
